@@ -12,7 +12,17 @@ function applyCustomSort() {
     let comparator = compareFunction;
 
     if (typeof compareFunction !== 'function') {
-      comparator = (a, b) => String(a) > String(b);
+      comparator = (a, b) => {
+        if (String(a) < String(b)) {
+          return -1;
+        }
+
+        if (String(a) > String(b)) {
+          return 1;
+        }
+
+        return 0;
+      };
     }
 
     // Якщо compareFunction задана, то порівнюємо елементи методом бульбашки,
@@ -22,7 +32,10 @@ function applyCustomSort() {
     for (let i = 0; i < this.length - 1; i++) {
       for (let j = 0; j < this.length - 1 - i; j++) {
         if (comparator(this[j], this[j + 1]) > 0) {
-          [this[j], this[j + 1]] = [this[j + 1], this[j]]; // Swap elements
+          const temp = this[j];
+
+          this[j] = this[j + 1];
+          this[j + 1] = temp;
         }
       }
     }
